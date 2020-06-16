@@ -4,7 +4,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import HomeScreen from './src/HomeScreen';
+import ManualInput from './src/ManualInput';
 
 const Stack = createStackNavigator();
 
@@ -21,12 +23,18 @@ export default function App() {
                         shadowOffset: { height: 0, width: 0 }
                     },
                     headerTitleStyle: {
+                        flex: 1,
                         textAlign: 'center',
                         color: '#222',
                         fontWeight: 'bold'
+                    },
+                    headerLayoutPreset: 'center',
+                    headerTitleContainerStyle: {
+                        left: 0
                     }
                 }}>
                     <Stack.Screen name="Home" component={HomeScreen}/>
+                    <Stack.Screen name="Manual" component={ManualInput}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>
