@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import CustomButton from './common/CustomButton';
 
 export default class ManualInput extends Component {
@@ -15,6 +16,7 @@ export default class ManualInput extends Component {
             curPrice: '',
             tax: 8.0
         };
+
         this.onChangeItem = this.onChangeItem.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onClickAdd = this.onClickAdd.bind(this);
@@ -44,6 +46,12 @@ export default class ManualInput extends Component {
     onChangeTax(tax) {
         this.setState({
             tax: tax
+        });
+    }
+
+    onClickNext() {
+        this.props.navigation.navigate('SplitOption', {
+            items: this.state.items
         });
     }
 
@@ -101,6 +109,7 @@ export default class ManualInput extends Component {
                     width="50%"
                     backgroundColor="#08f26e"
                     color="#fff"
+                    onPress={this.onClickNext.bind(this)}
                 />
 
             </SafeAreaView>
