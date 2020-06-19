@@ -4,10 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from './common/CustomButton';
 
 export default function SplitOption({ navigation, route }) {
+  
+    const { items, taxPercent } = route.params;
 
-    // [{item: abc, price: 12.3}, ...]
-    items = route.params.items;
     console.log(items);
+    console.log(taxPercent);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -15,6 +16,10 @@ export default function SplitOption({ navigation, route }) {
             <CustomButton
                 text="Even Split"
                 width="90%"
+                onPress={() => {navigation.navigate('EvenSplit', {
+                  items: items,
+                  taxPercent: taxPercent
+                })}}
             />
 
             <Text style={{ textAlign:'center' }}>OR</Text>

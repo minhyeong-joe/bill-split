@@ -8,6 +8,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from './src/HomeScreen';
 import ManualInput from './src/ManualInput';
 import SplitOption from './src/SplitOption';
+import EvenSplit from './src/EvenSplit';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,7 @@ export default function App() {
                     <Stack.Screen name="Home" component={HomeScreen}/>
                     <Stack.Screen name="Manual" component={ManualInput} />
                     <Stack.Screen name="SplitOption" component={SplitOption} />
+                    <Stack.Screen name="EvenSplit" component={EvenSplit} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

@@ -14,7 +14,7 @@ export default class ManualInput extends Component {
             curIndex: 0,
             curItem: '',
             curPrice: '',
-            tax: 8.0
+            taxPercent: '8.0'
         };
 
         this.onChangeItem = this.onChangeItem.bind(this);
@@ -36,7 +36,7 @@ export default class ManualInput extends Component {
 
     onClickAdd() {
         this.setState(prevState => ({
-            items: [...prevState.items, { "item": this.state.curItem, "price": this.state.curPrice }],
+            items: [...prevState.items, { "item": this.state.curItem, "price": parseFloat(parseFloat(this.state.curPrice).toFixed(2)) }],
             curItem: '',
             curPrice: '',
             curIndex: this.state.curIndex + 1,
@@ -45,13 +45,14 @@ export default class ManualInput extends Component {
 
     onChangeTax(tax) {
         this.setState({
-            tax: tax
+            taxPercent: tax
         });
     }
 
     onClickNext() {
         this.props.navigation.navigate('SplitOption', {
-            items: this.state.items
+            items: this.state.items,
+            taxPercent: this.state.taxPercent
         });
     }
 
@@ -96,8 +97,8 @@ export default class ManualInput extends Component {
                     <Text style={styles.taxText}>Tax: </Text>
                     <TextInput
                         style={styles.taxInput}
-                        placeholder="Tax"
-                        value={this.state.tax.toString()}
+                        placeholder="Tax Percentage"
+                        value={this.state.taxPercent}
                         onChangeText={text => { this.onChangeTax(text) }}
                         keyboardType="numeric"
                     />
