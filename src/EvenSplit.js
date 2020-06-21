@@ -17,6 +17,7 @@ export default class EvenSplit extends Component {
     this.onChangeTip = this.onChangeTip.bind(this);
     this.onSwitchRoundUp = this.onSwitchRoundUp.bind(this);
     this.onClickSplit = this.onClickSplit.bind(this);
+    this.divisibleByN = this.divisibleByN.bind(this);
   }
 
   onChangePartyNumber(num) {
@@ -53,50 +54,63 @@ export default class EvenSplit extends Component {
     tipPercent = parseFloat(this.state.tip);
     // add tax and tip
     tax = parseFloat((subtotal * parseFloat(taxPercent)/100).toFixed(2));
-    total = subtotal + tax + tip;
+    total = parseFloat((subtotal + tax + tip).toFixed(2));
     // round up?
     if (this.state.roundUp) {
-      tip += parseFloat((Math.ceil(total) - total).toFixed(2));
-      tipPercent = parseFloat(((tip/subtotal)*100).toFixed(2));
-      total = Math.ceil(total);
+      let oldTotal = total;
+      total = this.divisibleByN(total, parseInt(this.state.numParty));
+      tip = parseFloat((tip + total - oldTotal).toFixed(2));
+      tipPercent = parseFloat(((tip/subtotal)*100).toFixed(1));
     }
 
     let result = {
       items: items,
       taxPercent: parseFloat(taxPercent),
       tax: tax,
-      numParty: this.state.numParty,
-      tip: parseFloat(tip.toFixed(2)),
+      numParty: parseInt(this.state.numParty),
+      tip: tip,
       tipPercent: tipPercent,
       subtotal: subtotal,
-      total: parseFloat(total.toFixed(2)),
+      total: total,
       roundUp: this.state.roundUp
     };
 
-    console.log(result);
+    this.props.navigation.navigate('ResultScreen', {
+      result: result
+    });
+  }
+
+  divisibleByN(price, n) {
+    let quotient = price/n;
+    let roundedQuotient = Math.round(quotient);
+    return roundedQuotient * n;
   }
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View>
+        <View style={styles.inputGroup}>
           <Text># of Party: </Text>
           <TextInput
+            style={styles.input}
             onChangeText={(text) => {this.onChangePartyNumber(text)}}
             value={this.state.numParty}
             keyboardType="number-pad"
+            underlineColorAndroid="#999"
           />
         </View>
-        <View>
+        <View style={styles.inputGroup}>
           <Text>Tip: </Text>
-          <View>
-            <TextInput
-              onChangeText={(text) => {this.onChangeTip(text)}}
-              value={this.state.tip}
-              keyboardType="numeric"
-            />
-            <Text>%</Text>
-          </View>
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => {this.onChangeTip(text)}}
+            value={this.state.tip}
+            keyboardType="numeric"
+            underlineColorAndroid="#999"
+          />
+          <Text>%</Text>
+        </View>
+        <View style={styles.inputGroup}>
           <Switch
             onValueChange={(val) => this.onSwitchRoundUp(val)}
             value={this.state.roundUp}
@@ -107,6 +121,7 @@ export default class EvenSplit extends Component {
           text="Split!"
           onPress={() => this.onClickSplit()}
           disabled={this.state.numParty == ''}
+          width="50%"
         />
       </SafeAreaView>
     );
@@ -118,5 +133,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center'
-  }
+  },
+  inputGroup: {
+      flexDirection: 'row',
+      marginVertical: 20
+  },
+  input: {
+    width: '25%',
+    paddingBottom: 8,
+    marginLeft: 10
+  },
 });

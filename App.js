@@ -9,6 +9,7 @@ import HomeScreen from './src/HomeScreen';
 import ManualInput from './src/ManualInput';
 import SplitOption from './src/SplitOption';
 import EvenSplit from './src/EvenSplit';
+import ResultScreen from './src/ResultScreen';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,7 @@ export default function App() {
                     <Stack.Screen name="Manual" component={ManualInput} />
                     <Stack.Screen name="SplitOption" component={SplitOption} />
                     <Stack.Screen name="EvenSplit" component={EvenSplit} />
+                    <Stack.Screen name="ResultScreen" component={ResultScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>
