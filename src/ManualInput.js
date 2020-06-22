@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { commonStyles } from './common/CommonStyles';
 import CustomButton from './common/CustomButton';
+import InputGroup from './common/InputGroup';
 
 export default class ManualInput extends Component {
 
@@ -58,22 +60,24 @@ export default class ManualInput extends Component {
 
     render() {
         return (
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={commonStyles.container}>
                 <Text style={styles.heading}>Manual Input</Text>
                 <Text style={styles.subheading}>Please enter items purchased below</Text>
-                <View style={styles.inputGroup}>
+                <View style={{flexDirection:'row', width: '90%', marginVertical: 20}}>
                     <TextInput
-                        style={styles.itemInput}
-                        placeholder="Item"
+                        style={[commonStyles.input, {flex: 3}]}
+                        placeholder="Item Name"
                         value={this.state.curItem}
-                        onChangeText={text => { this.onChangeItem(text) }}
+                        onChangeText={item => { this.onChangeItem(item) }}
+                        underlineColorAndroid="#222"
                     />
                     <TextInput
-                        style={styles.priceInput}
+                        style={[commonStyles.input, {flex: 1}]}
                         placeholder="Price"
                         value={this.state.curPrice}
-                        onChangeText={text => { this.onChangePrice(text) }}
+                        onChangeText={price => { this.onChangePrice(price) }}
                         keyboardType="numeric"
+                        underlineColorAndroid="#222"
                     />
                 </View>
                 <CustomButton
@@ -92,19 +96,19 @@ export default class ManualInput extends Component {
                         </View>
                     ))}
                 </ScrollView>
-
-                <View style={styles.taxContainer}>
-                    <Text style={styles.taxText}>Tax: </Text>
-                    <TextInput
-                        style={styles.taxInput}
-                        placeholder="Tax Percentage"
+                
+                <View style={{width: '90%'}}>
+                    <InputGroup 
+                        style={{width:'40%', alignSelf: 'flex-end'}}
+                        label="Tax:"
+                        append="%"
+                        onChangeText={tax=>this.onChangeTax(tax)}
                         value={this.state.taxPercent}
-                        onChangeText={text => { this.onChangeTax(text) }}
+                        placeholder="Tax Percentage"
                         keyboardType="numeric"
                     />
-                    <Text style={styles.taxText}> % </Text>
                 </View>
-
+                    
                 <CustomButton
                     text="Next >>"
                     width="50%"
@@ -134,25 +138,6 @@ const styles = StyleSheet.create({
         color: '#888',
         fontSize: 12
     },
-    inputGroup: {
-        flexDirection: 'row',
-        width: '90%',
-        marginVertical: 20
-    },
-    itemInput: {
-        flex: 3,
-        padding: 10,
-        borderBottomColor: 'gray',
-        borderBottomWidth: 1,
-        marginRight: 5
-    },
-    priceInput: {
-        flex: 1,
-        padding: 10,
-        borderBottomColor: 'gray',
-        borderBottomWidth: 1,
-        marginLeft: 5
-    },
     list: {
         flexDirection: 'row',
         borderBottomColor: '#999',
@@ -171,24 +156,5 @@ const styles = StyleSheet.create({
         width: '100%',
         marginLeft: 5,
         textAlign: 'right'
-    },
-    taxContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        width: '30%',
-        marginLeft: 'auto',
-        marginRight: 10
-    },
-    taxInput: {
-        borderBottomColor: 'gray',
-        borderBottomWidth: 1,
-        flex: 1.5,
-        marginHorizontal: 2
-    },
-    taxText: {
-        lineHeight: 18,
-        fontSize: 18,
-        justifyContent: 'center',
-        alignSelf: 'center'
     }
 });

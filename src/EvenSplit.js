@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Switch, StyleSheet } from 'react-native';
+import { View, Text, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { commonStyles} from './common/CommonStyles';
 import CustomButton from './common/CustomButton';
+import InputGroup from './common/InputGroup';
 
 export default class EvenSplit extends Component {
 
@@ -88,29 +90,24 @@ export default class EvenSplit extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.inputGroup}>
-          <Text># of Party: </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => {this.onChangePartyNumber(text)}}
-            value={this.state.numParty}
-            keyboardType="number-pad"
-            underlineColorAndroid="#999"
-          />
-        </View>
-        <View style={styles.inputGroup}>
-          <Text>Tip: </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => {this.onChangeTip(text)}}
-            value={this.state.tip}
-            keyboardType="numeric"
-            underlineColorAndroid="#999"
-          />
-          <Text>%</Text>
-        </View>
-        <View style={styles.inputGroup}>
+      <SafeAreaView style={commonStyles.container}>
+        <InputGroup 
+          style={{width: '50%', marginVertical: 20}}
+          label="# of Party:"
+          onChangeText={numParty => this.onChangePartyNumber(numParty)}
+          value={this.state.numParty}
+          keyboardType="number-pad"
+          width={1.5}
+        />
+        <InputGroup 
+          style={{width: '50%', marginVertical: 20}}
+          label="Tip:"
+          append="%"
+          onChangeText={tip => this.onChangeTip(tip)}
+          value={this.state.tip}
+          keyboardType="numeric"
+        />
+        <View style={{flexDirection:'row', marginVerical:20}}>
           <Switch
             onValueChange={(val) => this.onSwitchRoundUp(val)}
             value={this.state.roundUp}
@@ -120,7 +117,7 @@ export default class EvenSplit extends Component {
         <CustomButton
           text="Split!"
           onPress={() => this.onClickSplit()}
-          disabled={this.state.numParty == ''}
+          disabled={this.state.numParty == '' || this.state.tip == ''}
           width="50%"
         />
       </SafeAreaView>
@@ -128,19 +125,3 @@ export default class EvenSplit extends Component {
   }
 
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  inputGroup: {
-      flexDirection: 'row',
-      marginVertical: 20
-  },
-  input: {
-    width: '25%',
-    paddingBottom: 8,
-    marginLeft: 10
-  },
-});

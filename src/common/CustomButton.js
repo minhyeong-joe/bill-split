@@ -15,7 +15,13 @@ export default class CustomButton extends Component {
                 background={TouchableNativeFeedback.SelectableBackground()}
                 disabled={this.props.disabled}
             >
-                <View style={{ backgroundColor: this.props.backgroundColor, width: this.props.width, paddingVertical: this.props.paddingVertical, marginVertical: this.props.marginVertical, borderRadius: 5 }}>
+                <View style={{ 
+                    backgroundColor: this.props.disabled? '#aaa': this.props.backgroundColor, 
+                    width: this.props.width,
+                    paddingVertical: this.props.paddingVertical, 
+                    marginVertical: this.props.marginVertical, 
+                    borderRadius: 5 
+                }}>
                     <Text style={{ color: this.props.color, fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>{this.props.text}</Text>
                 </View>
 
