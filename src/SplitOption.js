@@ -27,6 +27,10 @@ export default function SplitOption({ navigation, route }) {
             <CustomButton
                 text="Itemized Split"
                 width="90%"
+                onPress={() => {navigation.navigate('ItemizedSplit', {
+                    items: items,
+                    taxPercent: taxPercent
+                })}}
             />
 
         </SafeAreaView>

@@ -14,6 +14,7 @@ export default class CustomButton extends Component {
                 onPress={this.props.onPress}
                 background={TouchableNativeFeedback.SelectableBackground()}
                 disabled={this.props.disabled}
+                style={this.props.style}
             >
                 <View style={{ 
                     backgroundColor: this.props.disabled? '#aaa': this.props.backgroundColor, 
