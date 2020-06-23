@@ -28,6 +28,7 @@ export default class ItemizedSplit extends Component {
         this.onClickAddPerson = this.onClickAddPerson.bind(this);
         this.onClickAddItem = this.onClickAddItem.bind(this);
         this.onSelectItem = this.onSelectItem.bind(this);
+        this.onModalClose = this.onModalClose.bind(this);
 
         console.log(this.state);
         
@@ -70,6 +71,23 @@ export default class ItemizedSplit extends Component {
         }));
     }
 
+    onModalClose() {
+        // add selected items to selected member
+        let members = [...this.state.members];
+        this.state.items.forEach((item, index) => {
+            if (this.state.curSelectedItem.includes(index)) {
+                members[this.state.curId].items.push(item);
+            }
+        });
+        let items = this.state.items.filter((_, index) => !this.state.curSelectedItem.includes(index));
+        this.setState({
+            members: members,
+            items: items,
+            showModal:false,
+            curSelectedItem: []
+        });
+    }
+
     onChangeTip(tip) {
         this.setState({
           tip: tip
@@ -87,23 +105,31 @@ export default class ItemizedSplit extends Component {
             <SafeAreaView style={commonStyles.container}>
                 <ScrollView style={{maxHeight: '80%', backgroundColor:'#eee', width: '90%', flex:1}}>
                     {this.state.members.map((member, index) => (
-                        <View style={{flexDirection:'row', width:'100%'}} key={index}>
-                            <TextInput
-                                style={[commonStyles.input, {flex:3, lineHeight:24, fontSize: 24, marginHorizontal: 15}]}
-                                placeholder="Name"
-                                onChangeText={(name) => this.onChangeName(name, index)}
-                                value={this.state.members[index].name}
-                                underlineColorAndroid="#999"
-                            />
-                            <CustomButton 
-                                text="Add Item"
-                                width="30%"
-                                style={{flex:1}}
-                                paddingVertical={10}
-                                backgroundColor="#7FFF00"
-                                disabled={this.state.members[index].name == ''}
-                                onPress={()=>this.onClickAddItem(index)}
-                            />
+                        <View style={{width:'100%', paddingBottom: 20}} key={index}>
+                            <View style={{flexDirection:'row', width:'100%'}}>
+                                <TextInput
+                                    style={[commonStyles.input, {flex:3, lineHeight:24, fontSize: 24, marginHorizontal: 15, fontWeight:'bold'}]}
+                                    placeholder="Name"
+                                    onChangeText={(name) => this.onChangeName(name, index)}
+                                    value={this.state.members[index].name}
+                                    underlineColorAndroid="#999"
+                                />
+                                <CustomButton 
+                                    text="Add Item"
+                                    width="30%"
+                                    style={{flex:1}}
+                                    paddingVertical={10}
+                                    backgroundColor="#7FFF00"
+                                    disabled={this.state.members[index].name == ''}
+                                    onPress={()=>this.onClickAddItem(index)}
+                                />
+                            </View>
+                            {member.items.map((item, index) => (
+                                <View style={[styles.list, {width:'90%', alignSelf:'center'}]} key={index}>
+                                    <Text style={[styles.listItem, {fontSize: 18}]}> {item.item} </Text>
+                                <Text style={[styles.listPrice, {fontSize: 18}]}> $ {parseFloat(item.price).toFixed(2)} </Text>
+                            </View>
+                            ))}
                         </View>
                     ))}
                     <View style={{alignItems:'center'}}>
@@ -141,9 +167,6 @@ export default class ItemizedSplit extends Component {
                     animationType="fade"
                     transparent={true}
                     visible={this.state.showModal}
-                    onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
-                    }}
                 >
                     <View style={commonStyles.fullCenterContainer}>
                         <View style={[commonStyles.fullCenterContainer, {maxHeight: '75%', width:'80%', backgroundColor:'rgba(255,255,255,0.85)'}]}>
@@ -166,7 +189,7 @@ export default class ItemizedSplit extends Component {
                             <CustomButton 
                                 text="Done"
                                 width="50%"
-                                onPress={() => this.setState({showModal:false})}
+                                onPress={() => this.onModalClose()}
                             />
                         </View>
                     </View>
