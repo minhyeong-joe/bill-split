@@ -2,9 +2,31 @@ import React from 'react';
 import { Text, ScrollView, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function ResultScreen({navigation, route}) {
+export default function EvenResultScreen({navigation, route}) {
 
-  const { items, numParty, roundUp, subtotal, tax, taxPercent, tip, tipPercent, total } = route.params.result;
+  const { items, numParty, taxPercent, tipPercent, roundUp } = route.params.data;
+  let subtotal = 0;
+  let tip = 0;
+  let tax = 0;
+  let total = 0;
+  let newTipPercent = tipPercent;
+  
+  items.forEach((item) => {
+    subtotal += item.price;
+  });
+  subtotal = parseFloat(subtotal.toFixed(2));
+  // pre-tax tip
+  tip = parseFloat((subtotal * newTipPercent/100).toFixed(2));
+  // add tax and tip
+  tax = parseFloat((subtotal * taxPercent/100).toFixed(2));
+  total = parseFloat((subtotal + tax + tip).toFixed(2));
+  // round up?
+  if (roundUp) {
+    let oldTotal = total;
+    total = divisibleByN(total, numParty);
+    tip = parseFloat((tip + total - oldTotal).toFixed(2));
+    newTipPercent = parseFloat(((tip/subtotal)*100).toFixed(1));
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,7 +49,7 @@ export default function ResultScreen({navigation, route}) {
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Tip: </Text>
-        <Text style={styles.value}> $ {tip.toFixed(2)} ({tipPercent.toFixed(1)} %)</Text>
+        <Text style={styles.value}> $ {tip.toFixed(2)} ({newTipPercent.toFixed(1)} %)</Text>
       </View>
       <View style={[styles.row, {borderTopWidth: 1, borderTopColor: '#222', marginTop: 5}]}>
         <Text style={[styles.label, {fontSize: 18, fontWeight: 'bold'}]}>Total: </Text>
@@ -36,6 +58,12 @@ export default function ResultScreen({navigation, route}) {
       <Text style={styles.perPerson}> $ {(total/numParty).toFixed(2)} / Person</Text>
     </SafeAreaView>
   )
+}
+
+function divisibleByN(price, n) {
+  let quotient = price/n;
+  let roundedQuotient = Math.ceil(quotient);
+  return roundedQuotient * n;
 }
 
 const styles = StyleSheet.create({
