@@ -130,16 +130,18 @@ export default class ItemizedSplit extends Component {
     render() {
         return (
             <View style={commonStyles.container}>
-                <ScrollView style={{maxHeight: '80%', backgroundColor:'#eee', width: '90%', flex:1}}>
-                    {this.state.members.map((member, index) => (
-                        <View style={{width:'100%', paddingBottom: 20}} key={index}>
+                <ScrollView style={{maxHeight: '80%', backgroundColor:'#eee', width: '90%', flex:1}} keyboardShouldPersistTaps="always">
+                    {this.state.members.map(member => (
+                        <View style={{width:'100%', paddingBottom: 10}} key={member.id}>
                             <View style={{flexDirection:'row', width:'100%'}}>
                                 <TextInput
                                     style={[commonStyles.input, {flex:3, lineHeight:24, fontSize: 24, marginHorizontal: 15, fontWeight:'bold'}]}
                                     placeholder="Name"
-                                    onChangeText={(name) => this.onChangeName(name, index)}
-                                    value={this.state.members[index].name}
+                                    onChangeText={(name) => this.onChangeName(name, member.id)}
+                                    value={member.name}
                                     underlineColorAndroid="#999"
+                                    autoFocus={true}
+                                    onSubmitEditing={() => this.onClickAddItem(member.id)}
                                 />
                                 <CustomButton 
                                     text="Add Item"
@@ -147,8 +149,8 @@ export default class ItemizedSplit extends Component {
                                     style={{flex:1}}
                                     paddingVertical={10}
                                     backgroundColor="#7FFF00"
-                                    disabled={this.state.members[index].name == ''}
-                                    onPress={()=>this.onClickAddItem(index)}
+                                    disabled={member.name == ''}
+                                    onPress={()=>this.onClickAddItem(member.id)}
                                 />
                             </View>
                             {this.state.memberItems

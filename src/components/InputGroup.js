@@ -14,13 +14,18 @@ export default class InputGroup extends Component {
         return (
             <View style={[{flexDirection: 'row'}, {...this.props.style}]}>
                 <Text style={{flex:1}}>{this.props.label}</Text>
-                <TextInput 
+                <TextInput
+                    ref={this.props.inputRef}
                     style={[commonStyles.input, {flex: this.props.width}]}
                     onChangeText={this.props.onChangeText}
                     value={this.props.value}
                     placeholder={this.props.placeholder}
                     keyboardType={this.props.keyboardType}
                     underlineColorAndroid={this.props.underlineColorAndroid}
+                    autoFocus={this.props.autoFocus}
+                    returnKeyType={this.props.returnKeyType}
+                    blurOnSubmit={this.props.blurOnSubmit}
+                    onSubmitEditing={this.props.onSubmitEditing}
                 />
                 {this.props.append !== '' ? <Text style={{flex:1}}>{this.props.append}</Text> :
             null}
@@ -38,7 +43,12 @@ InputGroup.propTypes = {
     keyboardType: PropTypes.string,
     underlineColorAndroid: PropTypes.string,
     append: PropTypes.string,
-    width: PropTypes.number
+    width: PropTypes.number,
+    inputRef: PropTypes.func,
+    autoFocus: PropTypes.bool,
+    returnKeyType: PropTypes.string,
+    blurOnSubmit: PropTypes.boolean,
+    onSubmitEditing: PropTypes.func
 }
 
 InputGroup.defaultProps = {
@@ -47,5 +57,7 @@ InputGroup.defaultProps = {
     keyboardType: 'default',
     underlineColorAndroid: '#999',
     append: '',
-    width: 2
+    width: 2,
+    autoFocus: false,
+    blurOnSubmit: true
 }

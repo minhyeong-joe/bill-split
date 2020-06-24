@@ -64,6 +64,11 @@ export default class EvenSplit extends Component {
           value={this.state.numParty}
           keyboardType="number-pad"
           width={1.5}
+          inputRef={(input) => this.numPartyInput = input}
+          autoFocus={true}
+          returnKeyType="next"
+          blurOnSubmit={false}
+          onSubmitEditing={() => this.tipInput.focus()} 
         />
         <InputGroup 
           style={{width: '50%', marginVertical: 20}}
@@ -71,7 +76,10 @@ export default class EvenSplit extends Component {
           append="%"
           onChangeText={tip => this.onChangeTip(tip)}
           value={this.state.tipPercent}
+          inputRef={(input) => this.tipInput = input}
           keyboardType="numeric"
+          returnKeyType="done"
+          onSubmitEditing={() => this.onClickSplit()}
         />
         <View style={{flexDirection:'row', marginVerical:20}}>
           <Switch

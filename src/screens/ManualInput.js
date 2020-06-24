@@ -42,6 +42,7 @@ export default class ManualInput extends Component {
             curPrice: '',
             curIndex: prevState.curIndex + 1,
         }));
+        this.itemInput.focus();
     }
 
     onChangeTax(tax) {
@@ -62,21 +63,29 @@ export default class ManualInput extends Component {
             <View style={commonStyles.container}>
                 <Text style={styles.heading}>Manual Input</Text>
                 <Text style={styles.subheading}>Please enter items purchased below</Text>
-                <View style={{flexDirection:'row', width: '90%', marginVertical: 20}}>
+                <View style={{flexDirection:'row', width: '90%', marginTop: 10, marginBottom: 0}}>
                     <TextInput
+                        ref={(input) => { this.itemInput = input;}}
                         style={[commonStyles.input, {flex: 3}]}
                         placeholder="Item Name"
                         value={this.state.curItem}
                         onChangeText={item => { this.onChangeItem(item) }}
                         underlineColorAndroid="#222"
+                        returnKeyType={this.state.curPrice == ''? "next": "done"}
+                        onSubmitEditing={() => {this.state.curPrice == ''? this.priceInput.focus() : this.onClickAdd()}}
+                        blurOnSubmit={false}
                     />
                     <TextInput
+                        ref={(input) => { this.priceInput = input; }}
                         style={[commonStyles.input, {flex: 1}]}
                         placeholder="Price"
                         value={this.state.curPrice}
                         onChangeText={price => { this.onChangePrice(price) }}
                         keyboardType="numeric"
                         underlineColorAndroid="#222"
+                        returnKeyType={this.state.curItem == ''? "previous": "done"}
+                        onSubmitEditing={() => {this.state.curItem == ''? this.itemInput.focus() : this.onClickAdd()}}
+                        blurOnSubmit={false}
                     />
                 </View>
                 <CustomButton
@@ -87,7 +96,7 @@ export default class ManualInput extends Component {
                     paddingVertical={10}
                 />
 
-                <ScrollView style={{width: '90%'}}>
+                <ScrollView style={{width: '90%', backgroundColor: '#eee'}}>
                     {this.state.items.map((item, index) => (
                         <View style={styles.list} key={index}>
                             <Text style={styles.listItem}> {item.item} </Text>
@@ -115,7 +124,6 @@ export default class ManualInput extends Component {
                     color="#fff"
                     onPress={this.onClickNext.bind(this)}
                 />
-
             </View>
         );
     }
