@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text, ScrollView, View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function EvenResultScreen({navigation, route}) {
+import { commonStyles } from '../CommonStyles';
+
+export default function EvenResultScreen({route}) {
 
   const { items, numParty, taxPercent, tipPercent, roundUp } = route.params.data;
   let subtotal = 0;
@@ -29,7 +30,7 @@ export default function EvenResultScreen({navigation, route}) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={commonStyles.container}>
       <Text style={styles.heading}>Bill</Text>
       <ScrollView style={styles.list}>
         {items.map((item, index) => (
@@ -56,7 +57,7 @@ export default function EvenResultScreen({navigation, route}) {
         <Text style={[styles.value, {fontSize: 18, fontWeight: 'bold'}]}> $ {total.toFixed(2)} </Text>
       </View>
       <Text style={styles.perPerson}> $ {(total/numParty).toFixed(2)} / Person</Text>
-    </SafeAreaView>
+    </View>
   )
 }
 
@@ -67,10 +68,6 @@ function divisibleByN(price, n) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center'
-  },
   heading: {
     fontSize: 24,
     fontWeight: 'bold',

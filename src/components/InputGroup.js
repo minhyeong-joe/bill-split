@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { commonStyles } from './CommonStyles';
+import { commonStyles } from '../CommonStyles';
 
 export default class InputGroup extends Component {
 

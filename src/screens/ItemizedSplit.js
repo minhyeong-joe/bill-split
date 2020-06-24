@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, Switch, Modal, TouchableHighlight, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { commonStyles } from './common/CommonStyles';
-import CustomButton from './common/CustomButton';
-import InputGroup from './common/InputGroup';
+import { commonStyles } from '../CommonStyles';
+import CustomButton from '../components/CustomButton';
+import InputGroup from '../components/InputGroup';
 
 export default class ItemizedSplit extends Component {
     
@@ -130,7 +129,7 @@ export default class ItemizedSplit extends Component {
 
     render() {
         return (
-            <SafeAreaView style={commonStyles.container}>
+            <View style={commonStyles.container}>
                 <ScrollView style={{maxHeight: '80%', backgroundColor:'#eee', width: '90%', flex:1}}>
                     {this.state.members.map((member, index) => (
                         <View style={{width:'100%', paddingBottom: 20}} key={index}>
@@ -227,7 +226,7 @@ export default class ItemizedSplit extends Component {
                         </View>
                     </View>
                 </Modal>
-            </SafeAreaView>
+            </View>
         );
     }
 

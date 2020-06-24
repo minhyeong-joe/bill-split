@@ -1,11 +1,12 @@
 import React from 'react';
-import {  StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomButton from './common/CustomButton';
+import { View } from 'react-native';
+
+import { commonStyles } from '../CommonStyles';
+import CustomButton from '../components/CustomButton';
 
 export default function HomeScreen({ navigation }) {
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={commonStyles.container}>
 
             <CustomButton
                 text="Scan Receipt"
@@ -18,13 +19,6 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => { navigation.navigate('Manual') }}
             />
 
-        </SafeAreaView>
+        </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center'
-    }
-});

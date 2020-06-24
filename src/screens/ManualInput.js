@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { commonStyles } from './common/CommonStyles';
-import CustomButton from './common/CustomButton';
-import InputGroup from './common/InputGroup';
+import { commonStyles } from '../CommonStyles';
+import CustomButton from '../components/CustomButton';
+import InputGroup from '../components/InputGroup';
 
 export default class ManualInput extends Component {
 
@@ -60,7 +59,7 @@ export default class ManualInput extends Component {
 
     render() {
         return (
-            <SafeAreaView style={commonStyles.container}>
+            <View style={commonStyles.container}>
                 <Text style={styles.heading}>Manual Input</Text>
                 <Text style={styles.subheading}>Please enter items purchased below</Text>
                 <View style={{flexDirection:'row', width: '90%', marginVertical: 20}}>
@@ -117,17 +116,13 @@ export default class ManualInput extends Component {
                     onPress={this.onClickNext.bind(this)}
                 />
 
-            </SafeAreaView>
+            </View>
         );
     }
 
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center'
-    },
     heading: {
         textAlign: 'center',
         fontWeight: 'bold',

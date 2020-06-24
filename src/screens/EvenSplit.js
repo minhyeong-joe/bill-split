@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Switch } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { commonStyles} from './common/CommonStyles';
-import CustomButton from './common/CustomButton';
-import InputGroup from './common/InputGroup';
+import { commonStyles} from '../CommonStyles';
+import CustomButton from '../components/CustomButton';
+import InputGroup from '../components/InputGroup';
 
 export default class EvenSplit extends Component {
 
@@ -57,7 +56,7 @@ export default class EvenSplit extends Component {
 
   render() {
     return (
-      <SafeAreaView style={commonStyles.container}>
+      <View style={commonStyles.container}>
         <InputGroup 
           style={{width: '50%', marginVertical: 20}}
           label="# of Party:"
@@ -87,7 +86,7 @@ export default class EvenSplit extends Component {
           disabled={this.state.numParty == '' || this.state.tipPercent == ''}
           width="50%"
         />
-      </SafeAreaView>
+      </View>
     );
   }
 
