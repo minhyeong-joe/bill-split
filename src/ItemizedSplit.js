@@ -12,15 +12,16 @@ export default class ItemizedSplit extends Component {
         super(props);
         const { items } = this.props.route.params;
         this.state = {
-            // members: [ {name: abc, items: [{item: a, price: 12}, {item: b, price: 4} ... ] } ... ]
-            members: [{name: '', items: []}],
-            items: items,
+            // members: [{id: 0, name: 'John'}, {id: 1, name: 'Doe'} ...]
+            members: [{id: 0, name: ''}],
             tip: '15.0',
             roundUp: false,
             showModal: false,
-            curId: 0,
+            curMemberId: 0,
             curSelectedItem: [],
-            selectedItems: []
+            // memberItems: [{memId: 0, itemId: 0}, {memId: 0, itemId: 2}, {memId: 1, itemId: 1} ...]
+            memberItems: [],
+            items: items
         };
         this.onChangeTip = this.onChangeTip.bind(this);
         this.onSwitchRoundUp = this.onSwitchRoundUp.bind(this);
@@ -29,13 +30,14 @@ export default class ItemizedSplit extends Component {
         this.onClickAddItem = this.onClickAddItem.bind(this);
         this.onSelectItem = this.onSelectItem.bind(this);
         this.onModalClose = this.onModalClose.bind(this);
+        this.setItemColor = this.setItemColor.bind(this);
 
         console.log(this.state);
         
     }
 
     onClickAddPerson() {
-        let newMember = {name: '', items: []};
+        let newMember = {id: this.state.members.length, name: ''};
         this.setState(prevState => ({
             members: [...prevState.members, newMember]
         }));
@@ -43,7 +45,8 @@ export default class ItemizedSplit extends Component {
 
     onChangeName(name, id) {
         let members = [...this.state.members];
-        members[id].name = name;
+        let i = members.findIndex(m => m.id == id);
+        members[i].name = name;
         this.setState({
             members: members
         });
@@ -52,39 +55,51 @@ export default class ItemizedSplit extends Component {
     onClickAddItem(id) {
         this.setState({
             showModal: true,
-            curId: id
+            curMemberId: id
         });
     }
 
-    onSelectItem(id) {
+    onSelectItem(itemId) {
         let selected = [...this.state.curSelectedItem];
-        if (selected.includes(id)) {
-            // de-select
-            selected.splice(selected.indexOf(id), 1);
+        let memberItems = [...this.state.memberItems];
+        let curMemberId = this.state.curMemberId;
+        // if item is already added to this member
+        if (memberItems.filter(mi => mi.memId == curMemberId && mi.itemId == itemId).length > 0) {
+            memberItems = memberItems.filter(mi => mi.memId != curMemberId && mi.itemId != itemId);
         }
+        // otherwise,
         else {
-            // select
-            selected.push(id);
+            // if currently already selected
+            if (selected.includes(itemId)) {
+                // de-select
+                selected.splice(selected.indexOf(itemId), 1);
+            }
+            // else
+            else {
+                // select
+                selected.push(itemId);
+            }
         }
-        this.setState(prevState => ({
+        
+        
+        this.setState({
+            memberItems: memberItems,
             curSelectedItem: selected
-        }));
+        });
     }
 
     onModalClose() {
-        // add selected items to selected member
-        let members = [...this.state.members];
-        this.state.items.forEach((item, index) => {
-            if (this.state.curSelectedItem.includes(index)) {
-                members[this.state.curId].items.push(item);
-            }
-        });
-        let items = this.state.items.filter((_, index) => !this.state.curSelectedItem.includes(index));
+        // add selected items and selected member pair to memberItems
+        let memberItems = [...this.state.memberItems];
+        let memberId = this.state.curMemberId;
+        for (let itemId of this.state.curSelectedItem) {
+            memberItems.push({memId: memberId, itemId: parseInt(itemId)});
+        }
+        
         this.setState({
-            members: members,
-            items: items,
             showModal:false,
-            curSelectedItem: []
+            curSelectedItem: [],
+            memberItems: memberItems
         });
     }
 
@@ -98,6 +113,19 @@ export default class ItemizedSplit extends Component {
         this.setState({
           roundUp: val
         });
+    }
+
+    setItemColor(memId, itemId) {
+        if (this.state.curSelectedItem.includes(itemId)) {
+            return styles.selected;
+        }
+        if (this.state.memberItems.filter(mi => mi.itemId == itemId && mi.memId == memId).length > 0) {
+            return styles.selected;
+        }
+        if (this.state.memberItems.findIndex(mi => mi.itemId == itemId) >= 0) {
+            return styles.added;
+        }
+        return {};
     }
 
     render() {
@@ -124,12 +152,17 @@ export default class ItemizedSplit extends Component {
                                     onPress={()=>this.onClickAddItem(index)}
                                 />
                             </View>
-                            {member.items.map((item, index) => (
-                                <View style={[styles.list, {width:'90%', alignSelf:'center'}]} key={index}>
-                                    <Text style={[styles.listItem, {fontSize: 18}]}> {item.item} </Text>
-                                <Text style={[styles.listPrice, {fontSize: 18}]}> $ {parseFloat(item.price).toFixed(2)} </Text>
-                            </View>
-                            ))}
+                            {this.state.memberItems
+                                .filter(memItems => memItems.memId == member.id)
+                                .map(memItems => {
+                                    let item = this.state.items.filter(i => i.id == memItems.itemId)[0];
+                                    return (
+                                    <View style={[styles.list, {width:'90%', alignSelf:'center'}]} key={item.id}>
+                                        <Text style={[styles.listItem, {fontSize: 18}]}> {item.item} </Text>
+                                        <Text style={[styles.listPrice, {fontSize: 18}]}> $ {parseFloat(item.price).toFixed(2)} </Text>
+                                    </View>
+                                    );
+                                })}
                         </View>
                     ))}
                     <View style={{alignItems:'center'}}>
@@ -170,16 +203,16 @@ export default class ItemizedSplit extends Component {
                 >
                     <View style={commonStyles.fullCenterContainer}>
                         <View style={[commonStyles.fullCenterContainer, {maxHeight: '75%', width:'80%', backgroundColor:'rgba(255,255,255,0.85)'}]}>
-                            <Text style={{marginVertical:10, fontSize: 20}}>Adding item for {this.state.members[this.state.curId].name}</Text>
+                            <Text style={{marginVertical:10, fontSize: 20}}>Adding item for {this.state.members[this.state.curMemberId].name}</Text>
                             <ScrollView style={{width:'90%'}}>
-                            {this.state.items.map((item, index) => (
+                            {this.state.items.map(item => (
                                 <TouchableHighlight
                                     activeOpacity={0.6}
                                     underlayColor="#00FF00"
-                                    onPress={() => this.onSelectItem(index)}
-                                    key={index}
+                                    onPress={() => this.onSelectItem(item.id)}
+                                    key={item.id}
                                 >
-                                    <View style={[styles.list, this.state.curSelectedItem.includes(index)? styles.selected: {}]} key={index}>
+                                    <View style={[styles.list, this.setItemColor(this.state.curMemberId, item.id)]}>
                                         <Text style={styles.listItem}> {item.item} </Text>
                                         <Text style={styles.listPrice}> $ {parseFloat(item.price).toFixed(2)} </Text>
                                     </View>
@@ -209,6 +242,9 @@ const styles = StyleSheet.create({
     },
     selected: {
         backgroundColor: '#00FF00'
+    },
+    added: {
+        backgroundColor: '#FFE4B5'
     },
     listItem: {
         flex: 2,

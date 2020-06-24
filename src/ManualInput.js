@@ -11,7 +11,7 @@ export default class ManualInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // [{item, price}, ...]
+            // [{id, item, price}, ...]
             items: [],
             curIndex: 0,
             curItem: '',
@@ -38,10 +38,10 @@ export default class ManualInput extends Component {
 
     onClickAdd() {
         this.setState(prevState => ({
-            items: [...prevState.items, { "item": this.state.curItem, "price": parseFloat(parseFloat(this.state.curPrice).toFixed(2)) }],
+            items: [...prevState.items, { "id": prevState.curIndex, "item": this.state.curItem, "price": parseFloat(parseFloat(this.state.curPrice).toFixed(2)) }],
             curItem: '',
             curPrice: '',
-            curIndex: this.state.curIndex + 1,
+            curIndex: prevState.curIndex + 1,
         }));
     }
 
