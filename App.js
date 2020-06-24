@@ -19,25 +19,19 @@ export default function App() {
         <SafeAreaProvider>
             <SafeAreaView style={{flex:1}}>
                 <NavigationContainer>
-                    <Stack.Navigator screenOptions={{
-                        title: 'BillSplit',
-                        headerStyle: {
-                            shadowOpacity: 0.75,
-                            elevation: 1,
-                            shadowRadius: 5,
-                            shadowColor: '#111',
-                            shadowOffset: { height: 0, width: 0 }
-                        },
-                        headerTitleStyle: {
-                            flex: 1,
-                            textAlign: 'center',
-                            color: '#222',
-                            fontWeight: 'bold'
-                        },
-                        headerLayoutPreset: 'center',
-                        headerTitleContainerStyle: {
-                            left: 0
-                        }
+                    <Stack.Navigator 
+                        screenOptions={{
+                            title: 'BillSplit',
+                            headerTitleStyle: {
+                                textAlign: 'center',
+                                color: '#222',
+                                fontWeight: 'bold',
+                            },
+                            headerLayoutPreset: 'center',
+                            headerTitleContainerStyle: {
+                                left: 50,
+                                right: 50,
+                            }
                     }}>
                         <Stack.Screen name="Home" component={HomeScreen}/>
                         <Stack.Screen name="Manual" component={ManualInput} />
