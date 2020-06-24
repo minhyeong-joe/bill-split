@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, ScrollView, Switch, Modal, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ScrollView, Switch, Modal, Alert, TouchableHighlight, StyleSheet } from 'react-native';
 
 import { commonStyles } from '../CommonStyles';
 import CustomButton from '../components/CustomButton';
@@ -13,7 +13,7 @@ export default class ItemizedSplit extends Component {
         this.state = {
             // members: [{id: 0, name: 'John'}, {id: 1, name: 'Doe'} ...]
             members: [{id: 0, name: ''}],
-            tip: '15.0',
+            tipPercent: '15.0',
             roundUp: false,
             showModal: false,
             curMemberId: 0,
@@ -22,27 +22,16 @@ export default class ItemizedSplit extends Component {
             memberItems: [],
             items: items
         };
-        this.onChangeTip = this.onChangeTip.bind(this);
-        this.onSwitchRoundUp = this.onSwitchRoundUp.bind(this);
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onClickAddPerson = this.onClickAddPerson.bind(this);
-        this.onClickAddItem = this.onClickAddItem.bind(this);
-        this.onSelectItem = this.onSelectItem.bind(this);
-        this.onModalClose = this.onModalClose.bind(this);
-        this.setItemColor = this.setItemColor.bind(this);
-
-        console.log(this.state);
-        
     }
 
-    onClickAddPerson() {
+    onClickAddPerson = () => {
         let newMember = {id: this.state.members.length, name: ''};
         this.setState(prevState => ({
             members: [...prevState.members, newMember]
         }));
     }
 
-    onChangeName(name, id) {
+    onChangeName = (name, id) => {
         let members = [...this.state.members];
         let i = members.findIndex(m => m.id == id);
         members[i].name = name;
@@ -51,14 +40,15 @@ export default class ItemizedSplit extends Component {
         });
     }
 
-    onClickAddItem(id) {
+    onClickAddItem = id => {
+        this.nameInput.blur();
         this.setState({
             showModal: true,
             curMemberId: id
         });
     }
 
-    onSelectItem(itemId) {
+    onSelectItem = itemId => {
         let selected = [...this.state.curSelectedItem];
         let memberItems = [...this.state.memberItems];
         let curMemberId = this.state.curMemberId;
@@ -80,14 +70,13 @@ export default class ItemizedSplit extends Component {
             }
         }
         
-        
         this.setState({
             memberItems: memberItems,
             curSelectedItem: selected
         });
     }
 
-    onModalClose() {
+    onModalClose = () => {
         // add selected items and selected member pair to memberItems
         let memberItems = [...this.state.memberItems];
         let memberId = this.state.curMemberId;
@@ -102,19 +91,39 @@ export default class ItemizedSplit extends Component {
         });
     }
 
-    onChangeTip(tip) {
+    onChangeTip = tipPercent => {
         this.setState({
-          tip: tip
+            tipPercent: tipPercent
         });
       }
 
-    onSwitchRoundUp(val) {
+    onSwitchRoundUp = val => {
         this.setState({
-          roundUp: val
+            roundUp: val
         });
     }
 
-    setItemColor(memId, itemId) {
+    onClickSplit = () => {
+        if (!this.allItemsAdded()) {
+            Alert.alert("Incomplete", "There are still some unaccounted items", [{text:"OK"}]);
+        } else if (this.state.tipPercent == '' || isNaN(parseFloat(this.state.tipPercent))) {
+            Alert.alert("Incomplete", "You have to fill in Tip Percentage as valid number", [{text:"OK"}]);
+        } else {
+
+            let data = {
+                items: this.state.items,
+                members: this.state.members,
+                memberItems: this.state.memberItems,
+                taxPercent: parseFloat(this.props.route.params.taxPercent),
+                tipPercent: parseFloat(this.state.tipPercent),
+                roundUp: this.state.roundUp
+            };
+
+            console.log("Split Pressed: ", data);
+        }
+    }
+
+    setItemColor = (memId, itemId) => {
         if (this.state.curSelectedItem.includes(itemId)) {
             return styles.selected;
         }
@@ -127,14 +136,23 @@ export default class ItemizedSplit extends Component {
         return {};
     }
 
+    allItemsAdded = () => {
+        // many-to-many between member and item, so use SET to remove duplicates
+        let usedItems = [...new Set(this.state.memberItems.map(pair => pair.itemId))];
+        
+        // if all items have been used, return true
+        return usedItems.length == this.state.items.length;
+    }
+
     render() {
         return (
             <View style={commonStyles.container}>
-                <ScrollView style={{maxHeight: '80%', backgroundColor:'#eee', width: '90%', flex:1}} keyboardShouldPersistTaps="always">
+                <ScrollView style={{maxHeight: '80%', backgroundColor:'#eee', width: '90%', flex:1}} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag">
                     {this.state.members.map(member => (
                         <View style={{width:'100%', paddingBottom: 10}} key={member.id}>
                             <View style={{flexDirection:'row', width:'100%'}}>
                                 <TextInput
+                                    ref={input => this.nameInput = input}
                                     style={[commonStyles.input, {flex:3, lineHeight:24, fontSize: 24, marginHorizontal: 15, fontWeight:'bold'}]}
                                     placeholder="Name"
                                     onChangeText={(name) => this.onChangeName(name, member.id)}
@@ -171,7 +189,7 @@ export default class ItemizedSplit extends Component {
                             text="+ Add Person"
                             width="75%"
                             paddingVertical={15}
-                            onPress={() => this.onClickAddPerson()}
+                            onPress={this.onClickAddPerson}
                             disabled={this.state.members[this.state.members.length-1].name == ''}
                         />
                     </View>
@@ -181,7 +199,7 @@ export default class ItemizedSplit extends Component {
                     label="Tip:"
                     append="%"
                     onChangeText={tip => this.onChangeTip(tip)}
-                    value={this.state.tip}
+                    value={this.state.tipPercent}
                     keyboardType="numeric"
                 />
                 <View style={{flexDirection:'row', marginVerical:20}}>
@@ -194,7 +212,7 @@ export default class ItemizedSplit extends Component {
                 <CustomButton
                     text="Split!"
                     width="50%"
-                    onPress={()=>console.log(this.state)}
+                    onPress={this.onClickSplit}
                 />
 
                 <Modal    

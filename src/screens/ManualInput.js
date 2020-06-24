@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, Alert } from 'react-native';
 
 import { commonStyles } from '../CommonStyles';
 import CustomButton from '../components/CustomButton';
@@ -17,25 +17,21 @@ export default class ManualInput extends Component {
             curPrice: '',
             taxPercent: '8.0'
         };
-
-        this.onChangeItem = this.onChangeItem.bind(this);
-        this.onChangePrice = this.onChangePrice.bind(this);
-        this.onClickAdd = this.onClickAdd.bind(this);
     }
 
-    onChangeItem(item) {
+    onChangeItem = item => {
         this.setState({
             curItem: item
         });
     }
 
-    onChangePrice(price) {
+    onChangePrice = price => {
         this.setState({
             curPrice: price
         });
     }
 
-    onClickAdd() {
+    onClickAdd = () => {
         this.setState(prevState => ({
             items: [...prevState.items, { "id": prevState.curIndex, "item": this.state.curItem, "price": parseFloat(parseFloat(this.state.curPrice).toFixed(2)) }],
             curItem: '',
@@ -45,17 +41,23 @@ export default class ManualInput extends Component {
         this.itemInput.focus();
     }
 
-    onChangeTax(tax) {
+    onChangeTax = tax => {
         this.setState({
             taxPercent: tax
         });
     }
 
-    onClickNext() {
-        this.props.navigation.navigate('SplitOption', {
-            items: this.state.items,
-            taxPercent: this.state.taxPercent
-        });
+    onClickNext = () => {
+        if (this.state.items.length == 0) {
+            Alert.alert("Incomplete", "You have not added any items", [{text:"OK"}]);
+        } else if (this.state.taxPercent == '' || isNaN(parseFloat(this.state.taxPercent))) {
+            Alert.alert("Incomplete", "You have to fill in Tax Percentage as valid number", [{text:"OK"}]);
+        } else {
+            this.props.navigation.navigate('SplitOption', {
+                items: this.state.items,
+                taxPercent: this.state.taxPercent
+            });
+        }
     }
 
     render() {
@@ -122,7 +124,7 @@ export default class ManualInput extends Component {
                     width="50%"
                     backgroundColor="#08f26e"
                     color="#fff"
-                    onPress={this.onClickNext.bind(this)}
+                    onPress={this.onClickNext}
                 />
             </View>
         );

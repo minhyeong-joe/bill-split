@@ -2,7 +2,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import HomeScreen from './src/screens/HomeScreen';
@@ -31,7 +31,8 @@ export default function App() {
                             headerTitleContainerStyle: {
                                 left: 50,
                                 right: 50,
-                            }
+                            },
+                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                     }}>
                         <Stack.Screen name="Home" component={HomeScreen}/>
                         <Stack.Screen name="Manual" component={ManualInput} />

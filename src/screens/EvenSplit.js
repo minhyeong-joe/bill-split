@@ -14,31 +14,27 @@ export default class EvenSplit extends Component {
       tipPercent: '15.0',
       roundUp: false
     };
-    this.onChangePartyNumber = this.onChangePartyNumber.bind(this);
-    this.onChangeTip = this.onChangeTip.bind(this);
-    this.onSwitchRoundUp = this.onSwitchRoundUp.bind(this);
-    this.onClickSplit = this.onClickSplit.bind(this);
   }
 
-  onChangePartyNumber(num) {
+  onChangePartyNumber = num => {
     this.setState({
       numParty: num
     });
   }
 
-  onChangeTip(tipPercent) {
+  onChangeTip = tipPercent => {
     this.setState({
-      tipPercent: tip
+      tipPercent: tipPercent
     });
   }
 
-  onSwitchRoundUp(val) {
+  onSwitchRoundUp = val => {
     this.setState({
       roundUp: val
     });
   }
 
-  onClickSplit() {
+  onClickSplit = () => {
     const { items, taxPercent } = this.props.route.params;
 
     let data = {
@@ -79,7 +75,7 @@ export default class EvenSplit extends Component {
           inputRef={(input) => this.tipInput = input}
           keyboardType="numeric"
           returnKeyType="done"
-          onSubmitEditing={() => this.onClickSplit()}
+          onSubmitEditing={this.onClickSplit}
         />
         <View style={{flexDirection:'row', marginVerical:20}}>
           <Switch
@@ -90,8 +86,8 @@ export default class EvenSplit extends Component {
         </View>
         <CustomButton
           text="Split!"
-          onPress={() => this.onClickSplit()}
-          disabled={this.state.numParty == '' || this.state.tipPercent == ''}
+          onPress={this.onClickSplit}
+          disabled={this.state.numParty == '' || this.state.tipPercent == '' || isNaN(parseFloat(this.state.tipPercent))}
           width="50%"
         />
       </View>

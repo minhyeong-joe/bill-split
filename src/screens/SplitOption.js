@@ -8,9 +8,6 @@ export default function SplitOption({ navigation, route }) {
   
     const { items, taxPercent } = route.params;
 
-    console.log(items);
-    console.log(taxPercent);
-
     return (
         <View style={commonStyles.fullCenterContainer}>
 
