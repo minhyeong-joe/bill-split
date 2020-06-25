@@ -119,7 +119,9 @@ export default class ItemizedSplit extends Component {
                 roundUp: this.state.roundUp
             };
 
-            console.log("Split Pressed: ", data);
+            this.props.navigation.navigate('ItemizedResultScreen', {
+                data: data
+            });
         }
     }
 

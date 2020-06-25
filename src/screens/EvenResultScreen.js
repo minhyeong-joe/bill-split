@@ -52,7 +52,7 @@ export default function EvenResultScreen({route}) {
         <Text style={styles.label}>Tip: </Text>
         <Text style={styles.value}> $ {tip.toFixed(2)} ({newTipPercent.toFixed(1)} %)</Text>
       </View>
-      <View style={[styles.row, {borderTopWidth: 1, borderTopColor: '#222', marginTop: 5}]}>
+      <View style={[styles.row, {borderTopWidth: 1, borderTopColor: '#999', marginTop: 8}]}>
         <Text style={[styles.label, {fontSize: 18, fontWeight: 'bold'}]}>Total: </Text>
         <Text style={[styles.value, {fontSize: 18, fontWeight: 'bold'}]}> $ {total.toFixed(2)} </Text>
       </View>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     width: '90%'
   },
   label: {
-    flex: 2,
+    flex: 1.5,
     textAlign: 'right',
     fontSize: 16
   },

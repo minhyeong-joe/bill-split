@@ -47,7 +47,7 @@ InputGroup.propTypes = {
     inputRef: PropTypes.func,
     autoFocus: PropTypes.bool,
     returnKeyType: PropTypes.string,
-    blurOnSubmit: PropTypes.boolean,
+    blurOnSubmit: PropTypes.bool,
     onSubmitEditing: PropTypes.func
 }
 

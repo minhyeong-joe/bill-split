@@ -11,6 +11,7 @@ import SplitOption from './src/screens/SplitOption';
 import EvenSplit from './src/screens/EvenSplit';
 import ItemizedSplit from './src/screens/ItemizedSplit';
 import EvenResultScreen from './src/screens/EvenResultScreen';
+import ItemizedResultScreen from './src/screens/ItemizedResultScreen';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,7 @@ export default function App() {
                         <Stack.Screen name="EvenSplit" component={EvenSplit} />
                         <Stack.Screen name="ItemizedSplit" component={ItemizedSplit} />
                         <Stack.Screen name="EvenResultScreen" component={EvenResultScreen} />
+                        <Stack.Screen name="ItemizedResultScreen" component={ItemizedResultScreen} /> 
                     </Stack.Navigator>
                 </NavigationContainer>
             </SafeAreaView>
