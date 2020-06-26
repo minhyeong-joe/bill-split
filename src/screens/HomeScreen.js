@@ -10,12 +10,12 @@ export default function HomeScreen({ navigation }) {
 
             <CustomButton
                 text="Scan Receipt"
-                width="90%"
+                style={{marginVertical: 20, width: '75%'}}
             />
 
             <CustomButton
                 text="Manual Input"
-                width="90%"
+                style={{marginVertical: 20, width: '75%'}}
                 onPress={() => { navigation.navigate('Manual') }}
             />
 

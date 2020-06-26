@@ -92,10 +92,10 @@ export default class ManualInput extends Component {
                 </View>
                 <CustomButton
                     text="ADD"
-                    width="50%"
                     onPress={this.onClickAdd}
                     disabled={this.state.curItem === '' || this.state.curPrice === ''}
-                    paddingVertical={10}
+                    style={{width:'50%'}}
+                    btnStyle={{paddingVertical: 10}}
                 />
 
                 <ScrollView style={{width: '90%', backgroundColor: '#eee'}}>
@@ -121,10 +121,9 @@ export default class ManualInput extends Component {
                     
                 <CustomButton
                     text="Next >>"
-                    width="50%"
-                    backgroundColor="#08f26e"
-                    color="#fff"
                     onPress={this.onClickNext}
+                    style={{width:'100%'}}
+                    btnStyle={{backgroundColor:'#08f26e', color:'#fff', borderRadius: 0}}
                 />
             </View>
         );

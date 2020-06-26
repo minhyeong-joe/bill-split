@@ -13,7 +13,7 @@ export default function SplitOption({ navigation, route }) {
 
             <CustomButton
                 text="Even Split"
-                width="90%"
+                style={{width:'90%'}}
                 onPress={() => {navigation.navigate('EvenSplit', {
                   items: items,
                   taxPercent: taxPercent
@@ -24,7 +24,7 @@ export default function SplitOption({ navigation, route }) {
 
             <CustomButton
                 text="Itemized Split"
-                width="90%"
+                style={{width:'90%'}}
                 onPress={() => {navigation.navigate('ItemizedSplit', {
                     items: items,
                     taxPercent: taxPercent

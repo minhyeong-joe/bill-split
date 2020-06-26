@@ -24,10 +24,6 @@ export default class ItemizedSplit extends Component {
         };
     }
 
-    componentDidUpdate() {
-        console.log(this.state);
-    }
-
     onClickAddPerson = () => {
         let newMember = {id: this.state.members.length, name: ''};
         this.setState(prevState => ({
@@ -155,11 +151,11 @@ export default class ItemizedSplit extends Component {
             <View style={commonStyles.container}>
                 <ScrollView style={{maxHeight: '80%', backgroundColor:'#eee', width: '90%', flex:1}} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag">
                     {this.state.members.map(member => (
-                        <View style={{width:'100%', paddingBottom: 10}} key={member.id}>
+                        <View style={{width:'100%', paddingBottom: 10, marginTop: 8}} key={member.id}>
                             <View style={{flexDirection:'row', width:'100%'}}>
                                 <TextInput
                                     ref={input => this.nameInput = input}
-                                    style={[commonStyles.input, {flex:3, lineHeight:24, fontSize: 24, marginHorizontal: 15, fontWeight:'bold'}]}
+                                    style={[commonStyles.input, {flex:2, lineHeight:24, fontSize: 24, marginHorizontal: 15, fontWeight:'bold'}]}
                                     placeholder="Name"
                                     onChangeText={(name) => this.onChangeName(name, member.id)}
                                     value={member.name}
@@ -169,10 +165,8 @@ export default class ItemizedSplit extends Component {
                                 />
                                 <CustomButton 
                                     text="Add Item"
-                                    width="30%"
                                     style={{flex:1}}
-                                    paddingVertical={10}
-                                    backgroundColor="#7FFF00"
+                                    btnStyle={{paddingVertical:10, backgroundColor:'#7fff00'}}
                                     disabled={member.name == ''}
                                     onPress={()=>this.onClickAddItem(member.id)}
                                 />
@@ -193,8 +187,8 @@ export default class ItemizedSplit extends Component {
                     <View style={{alignItems:'center'}}>
                         <CustomButton 
                             text="+ Add Person"
-                            width="75%"
-                            paddingVertical={15}
+                            style={{width:'80%'}}
+                            btnStyle={{paddingVertical: 8}}
                             onPress={this.onClickAddPerson}
                             disabled={this.state.members[this.state.members.length-1].name == ''}
                         />
@@ -217,8 +211,9 @@ export default class ItemizedSplit extends Component {
                 </View>
                 <CustomButton
                     text="Split!"
-                    width="50%"
                     onPress={this.onClickSplit}
+                    style={{width:'100%', marginTop: 8}}
+                    btnStyle={{backgroundColor:'#08f26e', color:'#fff', borderRadius: 0}}
                 />
 
                 <Modal    

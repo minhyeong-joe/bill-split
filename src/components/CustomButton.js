@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableNativeFeedback } from 'react-native';
+import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 export default class CustomButton extends Component {
@@ -10,23 +10,16 @@ export default class CustomButton extends Component {
 
     render() {
         return (
-            <TouchableNativeFeedback
+            <TouchableHighlight
                 onPress={this.props.onPress}
-                background={TouchableNativeFeedback.SelectableBackground()}
                 disabled={this.props.disabled}
-                style={this.props.style}
+                style={[{width: '100%'}, this.props.style]}
             >
-                <View style={{ 
-                    backgroundColor: this.props.disabled? '#aaa': this.props.backgroundColor, 
-                    width: this.props.width,
-                    paddingVertical: this.props.paddingVertical, 
-                    marginVertical: this.props.marginVertical, 
-                    borderRadius: 5 
-                }}>
-                    <Text style={{ color: this.props.color, fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>{this.props.text}</Text>
+                <View style={[styles.defaultBtn, this.props.btnStyle, this.props.disabled? {backgroundColor: '#aaa'}: {}]}>
+                    <Text style={[styles.defaultTxt, this.props.textStyle]}>{this.props.text}</Text>
                 </View>
 
-            </TouchableNativeFeedback>
+            </TouchableHighlight>
         );
     }
 
@@ -35,20 +28,27 @@ export default class CustomButton extends Component {
 CustomButton.propTypes = {
     text: PropTypes.string.isRequired,
     onPress: PropTypes.func,
-    backgroundColor: PropTypes.string,
-    color: PropTypes.string,
-    width: PropTypes.string,
-    paddingVertical: PropTypes.number,
-    marginVertical: PropTypes.number,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    style: PropTypes.object,
+    btnStyle: PropTypes.object,
+    textStyle: PropTypes.object
 }
 
 CustomButton.defaultProps = {
-    onPress: () => { },
-    backgroundColor: '#87CEEB',
-    color: '#000',
-    width: '100%',
-    paddingVertical: 20,
-    marginVertical: 10,
     disabled: false
 }
+
+const styles = StyleSheet.create({
+    defaultBtn: {
+        backgroundColor: '#87CEEB',
+        width: '100%',
+        paddingVertical: 15,
+        elevation: 5,
+        borderRadius: 10
+    },
+    defaultTxt: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold'
+    }
+});

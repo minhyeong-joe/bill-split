@@ -88,7 +88,8 @@ export default class EvenSplit extends Component {
           text="Split!"
           onPress={this.onClickSplit}
           disabled={this.state.numParty == '' || this.state.tipPercent == '' || isNaN(parseFloat(this.state.tipPercent))}
-          width="50%"
+          style={{width:'100%', marginTop: 10}}
+          btnStyle={{backgroundColor:'#08f26e', color:'#fff', borderRadius: 0}}
         />
       </View>
     );
