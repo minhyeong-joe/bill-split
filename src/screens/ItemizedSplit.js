@@ -24,6 +24,10 @@ export default class ItemizedSplit extends Component {
         };
     }
 
+    componentDidUpdate() {
+        console.log(this.state);
+    }
+
     onClickAddPerson = () => {
         let newMember = {id: this.state.members.length, name: ''};
         this.setState(prevState => ({
@@ -54,7 +58,7 @@ export default class ItemizedSplit extends Component {
         let curMemberId = this.state.curMemberId;
         // if item is already added to this member
         if (memberItems.filter(mi => mi.memId == curMemberId && mi.itemId == itemId).length > 0) {
-            memberItems = memberItems.filter(mi => mi.memId != curMemberId && mi.itemId != itemId);
+            memberItems = memberItems.filter(mi => mi.memId != curMemberId || mi.itemId != itemId);
         }
         // otherwise,
         else {
