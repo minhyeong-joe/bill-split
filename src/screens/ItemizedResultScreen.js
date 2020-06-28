@@ -73,14 +73,13 @@ export default function ItemizedResultScreen({route}) {
             memberCharges
             .filter(memberCharge => memberCharge.memId == member.id)
             .map(memberCharge => (
-              <View style={styles.listItem} key={memberCharge.itemId}>
-                <Text style={styles.item}>{memberCharge.itemName}</Text>
-                <Text style={styles.price}>$ {memberCharge.itemPortionPrice.toFixed(2)}
-                {
-                  memberCharge.itemPortionPrice != memberCharge.itemWholePrice? <Text style={styles.wholePrice}> ($ {memberCharge.itemWholePrice})</Text>: <Text></Text>
-                }
-                </Text>
-              </View>
+              <ListItem 
+                style={{width:'80%', alignSelf:'center'}}
+                key={memberCharge.itemId}
+                item={memberCharge.itemName}
+                price={memberCharge.itemPortionPrice}
+                wholePrice={memberCharge.itemWholePrice}
+              />
             ))
           }
           <View>
@@ -195,29 +194,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#9cc287', 
     width: '80%', 
     alignSelf: 'center'
-  },
-  listItem: {
-    flexDirection: 'row',
-    marginVertical: 2,
-    width: '80%',
-    alignSelf: 'center',
-    borderBottomColor: '#999',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
-    borderRadius: 1
-  },
-  item: {
-    flex: 1,
-    fontSize: 16
-  },
-  price: {
-    flex: 1,
-    textAlign: 'right',
-    fontSize: 16
-  },
-  wholePrice: {
-    fontStyle: 'italic',
-    textDecorationLine: 'line-through'
   },
   row: {
     flexDirection: 'row',

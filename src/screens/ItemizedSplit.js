@@ -152,7 +152,7 @@ export default class ItemizedSplit extends Component {
                 <ScrollView style={{maxHeight: '80%', backgroundColor:'#eee', width: '90%', flex:1}} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag">
                     {this.state.members.map(member => (
                         <View style={{width:'100%', paddingBottom: 10, marginTop: 8}} key={member.id}>
-                            <View style={{flexDirection:'row', width:'100%'}}>
+                            <View style={{flexDirection:'row', width:'100%', marginBottom: 5}}>
                                 <TextInput
                                     ref={input => this.nameInput = input}
                                     style={[commonStyles.input, {flex:2, lineHeight:24, fontSize: 24, marginHorizontal: 15, fontWeight:'bold'}]}
@@ -176,10 +176,12 @@ export default class ItemizedSplit extends Component {
                                 .map(memItems => {
                                     let item = this.state.items.filter(i => i.id == memItems.itemId)[0];
                                     return (
-                                    <View style={[styles.list, {width:'90%', alignSelf:'center'}]} key={item.id}>
-                                        <Text style={[styles.listItem, {fontSize: 18}]}> {item.item} </Text>
-                                        <Text style={[styles.listPrice, {fontSize: 18}]}> $ {parseFloat(item.price).toFixed(2)} </Text>
-                                    </View>
+                                    <ListItem 
+                                        style={{width:'85%', alignSelf:'center'}}
+                                        key={item.id}
+                                        item={item.item}
+                                        price={item.price}
+                                    />
                                     );
                                 })}
                         </View>

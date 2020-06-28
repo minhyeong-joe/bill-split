@@ -4,6 +4,7 @@ import { View, Text, TextInput, ScrollView, StyleSheet, Alert } from 'react-nati
 import { commonStyles } from '../CommonStyles';
 import CustomButton from '../components/CustomButton';
 import InputGroup from '../components/InputGroup';
+import ListItem from '../components/ListItem';
 
 export default class ManualInput extends Component {
 
@@ -39,6 +40,16 @@ export default class ManualInput extends Component {
             curIndex: prevState.curIndex + 1,
         }));
         this.itemInput.focus();
+    }
+
+    onClickItemDelete = id => {
+        this.itemInput.blur();
+        this.priceInput.blur();
+        let items = [...this.state.items];
+        items = items.filter(item => item.id != id);
+        this.setState({
+            items: items
+        });
     }
 
     onChangeTax = tax => {
@@ -98,12 +109,14 @@ export default class ManualInput extends Component {
                     btnStyle={{paddingVertical: 10}}
                 />
 
-                <ScrollView style={{width: '90%', backgroundColor: '#eee'}}>
-                    {this.state.items.map((item, index) => (
-                        <View style={styles.list} key={index}>
-                            <Text style={styles.listItem}> {item.item} </Text>
-                            <Text style={styles.listPrice}> $ {parseFloat(item.price).toFixed(2)} </Text>
-                        </View>
+                <ScrollView style={{width: '90%', backgroundColor: '#eee'}} keyboardShouldPersistTaps="always">
+                    {this.state.items.map(item => (
+                        <ListItem 
+                            key={item.id}
+                            item={item.item}
+                            price={item.price}
+                            onClickDelete={() => this.onClickItemDelete(item.id)}
+                        />
                     ))}
                 </ScrollView>
                 
@@ -141,24 +154,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#888',
         fontSize: 12
-    },
-    list: {
-        flexDirection: 'row',
-        borderBottomColor: '#999',
-        borderBottomWidth: 1,
-        marginBottom: 8
-    },
-    listItem: {
-        flex: 3,
-        fontSize: 16,
-        width: '100%',
-        marginRight: 5
-    },
-    listPrice: {
-        flex: 1,
-        fontSize: 16,
-        width: '100%',
-        marginLeft: 5,
-        textAlign: 'right'
     }
 });
