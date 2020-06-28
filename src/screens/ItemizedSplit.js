@@ -197,7 +197,7 @@ export default class ItemizedSplit extends Component {
                 <InputGroup 
                     style={{width: '50%', marginVertical: 20}}
                     label="Tip:"
-                    append="%"
+                    appendedText="%"
                     onChangeText={tip => this.onChangeTip(tip)}
                     value={this.state.tipPercent}
                     keyboardType="numeric"

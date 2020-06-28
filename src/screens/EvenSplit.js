@@ -59,7 +59,6 @@ export default class EvenSplit extends Component {
           onChangeText={numParty => this.onChangePartyNumber(numParty)}
           value={this.state.numParty}
           keyboardType="number-pad"
-          width={1.5}
           inputRef={(input) => this.numPartyInput = input}
           autoFocus={true}
           returnKeyType="next"
@@ -69,7 +68,7 @@ export default class EvenSplit extends Component {
         <InputGroup 
           style={{width: '50%', marginVertical: 20}}
           label="Tip:"
-          append="%"
+          appendedText="%"
           onChangeText={tip => this.onChangeTip(tip)}
           value={this.state.tipPercent}
           inputRef={(input) => this.tipInput = input}

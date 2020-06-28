@@ -111,7 +111,7 @@ export default class ManualInput extends Component {
                     <InputGroup 
                         style={{width:'40%', alignSelf: 'flex-end'}}
                         label="Tax:"
-                        append="%"
+                        appendedText="%"
                         onChangeText={tax=>this.onChangeTax(tax)}
                         value={this.state.taxPercent}
                         placeholder="Tax Percentage"

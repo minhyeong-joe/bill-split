@@ -13,10 +13,10 @@ export default class InputGroup extends Component {
     render() {
         return (
             <View style={[{flexDirection: 'row'}, {...this.props.style}]}>
-                <Text style={{flex:1}}>{this.props.label}</Text>
+                {this.props.label !== '' ? <Text style={{flex:1}}>{this.props.label}</Text> : <></>}
                 <TextInput
                     ref={this.props.inputRef}
-                    style={[commonStyles.input, {flex: this.props.width}]}
+                    style={[commonStyles.input, {...this.props.inputStyle}]}
                     onChangeText={this.props.onChangeText}
                     value={this.props.value}
                     placeholder={this.props.placeholder}
@@ -27,8 +27,7 @@ export default class InputGroup extends Component {
                     blurOnSubmit={this.props.blurOnSubmit}
                     onSubmitEditing={this.props.onSubmitEditing}
                 />
-                {this.props.append !== '' ? <Text style={{flex:1}}>{this.props.append}</Text> :
-            null}
+                {this.props.appendedText !== '' ? <Text style={{flex:0.5}}>{this.props.appendedText}</Text> : <></>}
             </View>
         );
     }
@@ -37,13 +36,13 @@ export default class InputGroup extends Component {
 InputGroup.propTypes = {
     style: PropTypes.object,
     label: PropTypes.string,
+    appendedText: PropTypes.string,
+    inputStyle: PropTypes.object,
     onChangeText: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     keyboardType: PropTypes.string,
     underlineColorAndroid: PropTypes.string,
-    append: PropTypes.string,
-    width: PropTypes.number,
     inputRef: PropTypes.func,
     autoFocus: PropTypes.bool,
     returnKeyType: PropTypes.string,
@@ -56,8 +55,7 @@ InputGroup.defaultProps = {
     placeholder: '',
     keyboardType: 'default',
     underlineColorAndroid: '#999',
-    append: '',
-    width: 2,
+    appendedText: '',
     autoFocus: false,
     blurOnSubmit: true
 }

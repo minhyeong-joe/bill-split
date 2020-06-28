@@ -12,7 +12,8 @@ const commonStyles = StyleSheet.create({
     },
     input: {
         paddingBottom: 8,
-        paddingHorizontal: 8
+        paddingHorizontal: 8,
+        flex: 1.5
     }
 });
 

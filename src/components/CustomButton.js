@@ -13,10 +13,10 @@ export default class CustomButton extends Component {
             <TouchableHighlight
                 onPress={this.props.onPress}
                 disabled={this.props.disabled}
-                style={[{width: '100%'}, this.props.style]}
+                style={[{width: '100%'}, {...this.props.style}]}
             >
-                <View style={[styles.defaultBtn, this.props.btnStyle, this.props.disabled? {backgroundColor: '#aaa'}: {}]}>
-                    <Text style={[styles.defaultTxt, this.props.textStyle]}>{this.props.text}</Text>
+                <View style={[styles.defaultBtn, {...this.props.btnStyle}, this.props.disabled? {backgroundColor: '#aaa'}: {}]}>
+                    <Text style={[styles.defaultTxt, {...this.props.textStyle}]}>{this.props.text}</Text>
                 </View>
 
             </TouchableHighlight>
