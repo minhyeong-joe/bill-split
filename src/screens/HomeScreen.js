@@ -11,6 +11,7 @@ export default function HomeScreen({ navigation }) {
             <CustomButton
                 text="Scan Receipt"
                 style={{marginVertical: 20, width: '75%'}}
+                onPress={() => { navigation.navigate('Scan') }}
             />
 
             <CustomButton

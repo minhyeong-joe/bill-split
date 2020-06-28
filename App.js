@@ -6,6 +6,7 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import HomeScreen from './src/screens/HomeScreen';
+import ScanReceipt from './src/screens/ScanReceipt';
 import ManualInput from './src/screens/ManualInput';
 import SplitOption from './src/screens/SplitOption';
 import EvenSplit from './src/screens/EvenSplit';
@@ -36,6 +37,7 @@ export default function App() {
                             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                     }}>
                         <Stack.Screen name="Home" component={HomeScreen}/>
+                        <Stack.Screen name="Scan" component={ScanReceipt}/>
                         <Stack.Screen name="Manual" component={ManualInput} />
                         <Stack.Screen name="SplitOption" component={SplitOption} />
                         <Stack.Screen name="EvenSplit" component={EvenSplit} />
