@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "BillSplit",
-    "slug": "BillSplit",
+    "slug": "bill-split",
     "platforms": [
       "ios",
       "android",
@@ -9,11 +9,11 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/tempIcon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/tempIcon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFD700"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,6 +23,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "This mobile app allows user to split bills including tips and tax evenly or by items. The app allows user to have multiple configurations based on the need.",
+    "githubUrl": "https://github.com/minhyeong-joe/bill-split"
   }
 }
