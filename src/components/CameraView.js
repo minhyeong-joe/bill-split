@@ -2,15 +2,20 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
+import { Ionicons } from '@expo/vector-icons';
 
 import { commonStyles } from '../CommonStyles';
 
 export default class CameraView extends Component {
 
     constructor(props) {
+        console.log(props);
+        
         super(props);
         this.state = {
             hasCameraPermission: null,
+            flashMode: Camera.Constants.FlashMode.off,
+            type: Camera.Constants.Type.back
         };
         // ref
         camera = null;
@@ -18,20 +23,37 @@ export default class CameraView extends Component {
 
     async componentDidMount() {
         const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
-        
-        console.log(cameraPermission.granted);
-
+    
         const hasCameraPermission = cameraPermission.granted;
-        
-        console.log(hasCameraPermission);
 
-        this.setState({ hasCameraPermission: hasCameraPermission });
-        
+        this.setState({ hasCameraPermission: hasCameraPermission });    
+    }
+
+    onClickFlash = () => {
+        this.setState(prevState => ({
+            flashMode: prevState.flashMode == Camera.Constants.FlashMode.on? Camera.Constants.FlashMode.off : Camera.Constants.FlashMode.on
+        }));
+    }
+
+    onClickPhoto = async () => {
+        if (this.camera) {
+            let photo = await this.camera.takePictureAsync();
+            console.log(photo);
+            this.props.navigation.navigate('TempPhotoView', {
+                image: photo
+            });
+        }
+    }
+
+    onClickReverse = () => {
+        this.setState(prevState=> ({
+            type: prevState.type == Camera.Constants.Type.back? Camera.Constants.Type.front: Camera.Constants.Type.back
+        }));
     }
 
     render() {
 
-        const { hasCameraPermission } = this.state;
+        const { hasCameraPermission, flashMode, type } = this.state;
         
         if (hasCameraPermission === null) {
             return <View style={[commonStyles.container, {backgroundColor: 'black'}]}/>;
@@ -44,24 +66,27 @@ export default class CameraView extends Component {
         }
 
         return (
-            <Camera style={{ flex: 1 }} type={Camera.Constants.Type.back}>
+            <Camera style={{ flex: 1 }} 
+                    flashMode={flashMode}
+                    type={type}
+                    ref={camera => this.camera = camera}>
                 <View style={{ flex: 5 }}></View>
                 <View style={{ flex: 1, flexDirection:'row', backgroundColor:'rgba(0,0,0,0.2)', justifyContent: 'space-around', alignItems:'center', paddingHorizontal: 20 }}>
-                    <TouchableOpacity onPress={() => {Alert.alert("Dev", "Toggle Camera Flash", [{text:"OK"}])}}>
-                        <View style={{ height: 75, width: 75, borderColor: 'cyan', borderWidth: 2, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{color: 'cyan', fontSize: 10}}>PLACEHOLDER</Text>
+                    <TouchableOpacity onPress={this.onClickFlash}>
+                        <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <Ionicons name={flashMode == Camera.Constants.FlashMode.on? "md-flash" : "md-flash-off"} size={32} color="white"></Ionicons>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {Alert.alert("Dev", "Take Photo!", [{text:"OK"}])}}>
-                        <View style={{ height: 75, width: 75, borderColor: 'cyan', borderWidth: 2, borderRadius: 60, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{color: 'cyan'}}>TEMP</Text>
+                    <TouchableOpacity onPress={this.onClickPhoto}>
+                        <View style={{ height: 75, width: 75, borderColor: 'white', borderWidth: 3, borderRadius: 60, justifyContent: 'center', alignItems: 'center' }}>
+                            <Ionicons name="md-camera" size={46} color="white" />
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {Alert.alert("Dev", "Toggle Front/Back Camera", [{text:"OK"}])}}>
-                        <View style={{ height: 75, width: 75, borderColor: 'cyan', borderWidth: 2, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{color: 'cyan', fontSize: 10}}>PLACEHOLDER</Text>
+                    <TouchableOpacity onPress={this.onClickReverse}>
+                        <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <Ionicons name="md-reverse-camera" size={32} color="white" />
                         </View>
                     </TouchableOpacity>
                 </View>

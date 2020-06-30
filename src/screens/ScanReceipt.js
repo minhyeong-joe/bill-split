@@ -6,7 +6,9 @@ import CameraView from '../components/CameraView';
 export default class ScanReceipt extends Component {
     render() {
         return (
-            <CameraView />
+            <CameraView 
+                navigation={this.props.navigation}
+            />
         );
     }
 }

@@ -14,6 +14,8 @@ export default class CustomButton extends Component {
                 onPress={this.props.onPress}
                 disabled={this.props.disabled}
                 style={[{width: '100%'}, {...this.props.style}]}
+                underlayColor="transparent"
+                activeOpacity={0.7}
             >
                 <View style={[styles.defaultBtn, {...this.props.btnStyle}, this.props.disabled? {backgroundColor: '#aaa'}: {}]}>
                     <Text style={[styles.defaultTxt, {...this.props.textStyle}]}>{this.props.text}</Text>
