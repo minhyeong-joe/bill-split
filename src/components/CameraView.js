@@ -5,12 +5,11 @@ import * as Permissions from 'expo-permissions';
 import { Ionicons } from '@expo/vector-icons';
 
 import { commonStyles } from '../CommonStyles';
+import { OCR_API_KEY } from '../../Config';
 
 export default class CameraView extends Component {
 
     constructor(props) {
-        console.log(props);
-        
         super(props);
         this.state = {
             hasCameraPermission: null,
@@ -37,10 +36,38 @@ export default class CameraView extends Component {
 
     onClickPhoto = async () => {
         if (this.camera) {
-            let photo = await this.camera.takePictureAsync();
-            console.log(photo);
-            this.props.navigation.navigate('TempPhotoView', {
-                image: photo
+            let photo = await this.camera.takePictureAsync({
+                quality: 0.5
+            });
+            Alert.alert("Temp", "Scanning Receipt...");
+
+            let imageFile = {
+                uri: photo.uri,
+                type: 'image/jpg',
+                name: 'receipt_scan.jpg'
+            }
+            let formData = new FormData();
+            formData.append("file", imageFile);
+            formData.append("isTable", true);
+            formData.append("scale", true);
+            formData.append("isOverlayRequired", false);
+            await fetch('https://api.ocr.space/parse/image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'apikey': OCR_API_KEY
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(res => {
+                this.props.navigation.navigate('TempPhotoView', {
+                    image: photo,
+                    text: res
+                });
+            })
+            .catch(err => {
+                console.error(err);
             });
         }
     }
@@ -69,6 +96,7 @@ export default class CameraView extends Component {
             <Camera style={{ flex: 1 }} 
                     flashMode={flashMode}
                     type={type}
+                    autoFocus={Camera.Constants.AutoFocus.on}
                     ref={camera => this.camera = camera}>
                 <View style={{ flex: 5 }}></View>
                 <View style={{ flex: 1, flexDirection:'row', backgroundColor:'rgba(0,0,0,0.2)', justifyContent: 'space-around', alignItems:'center', paddingHorizontal: 20 }}>

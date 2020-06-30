@@ -16,3 +16,6 @@ web-report/
 # IDE
 .vs/*
 .idea/*
+
+# API KEY & other configs
+Config.js

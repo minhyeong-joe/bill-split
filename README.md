@@ -39,6 +39,14 @@ Expo Publish Link: [https://expo.io/@sanheng03/bill-split](https://expo.io/@sanh
 
 ### Build & Run Application
 - Git clone the project
+- OCR API Key needs to be manually put inside `Config.js` under root directory
+	```
+	const OCR_API_KEY = '<YOUR_API_KEY>';
+
+	export { OCR_API_KEY };
+	```
+	The API key can be acquired at [OCR.Space's FREE OCR API](https://ocr.space/ocrapi)
+
 - Inside the project root directory, run `expo start`
 - On the mobile device, scan the QR code provided by Expo to run app
 	- iOS
