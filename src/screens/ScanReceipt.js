@@ -37,13 +37,14 @@ export default class ScanReceipt extends Component {
 
   onClickPhoto = async () => {
     if (this.camera) {
-      // let photo = await this.camera.takePictureAsync({
-      //   quality: 0.5,
-      // });
-      // this.props.navigation.navigate("VerifyScan", {
-      //   image: photo,
-      // });
-      this.props.navigation.navigate("VerifyScan");
+      let photo = await this.camera.takePictureAsync({
+        quality: 0.5,
+      });
+      this.props.navigation.navigate("VerifyScan", {
+        image: photo,
+      });
+      // FOR DEBUG AND TEST WITHOUT USING API
+      // this.props.navigation.navigate("VerifyScan");
     }
   };
 
