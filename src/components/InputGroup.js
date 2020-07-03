@@ -43,7 +43,7 @@ export default class InputGroup extends Component {
 
 InputGroup.propTypes = {
   style: PropTypes.object,
-  label: PropTypes.string,
+  label: PropTypes.string.isRequired,
   appendedText: PropTypes.string,
   inputStyle: PropTypes.object,
   onChangeText: PropTypes.func.isRequired,

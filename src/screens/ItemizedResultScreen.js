@@ -1,10 +1,11 @@
 import React from "react";
-import { Text, ScrollView, View, StyleSheet } from "react-native";
+import { Text, ScrollView, View, StyleSheet, Share } from "react-native";
 
 import { commonStyles } from "../CommonStyles";
 
-export default function ItemizedResultScreen({ route }) {
-  console.log(route.params.data);
+import CustomButton from '../components/CustomButton';
+
+export default function ItemizedResultScreen({ navigation, route }) {
 
   const {
     items,
@@ -74,8 +75,6 @@ export default function ItemizedResultScreen({ route }) {
     combinedTip = getTip(combinedSubtotal, tipPercent);
   }
   let combinedTotal = getTotal(combinedSubtotal, combinedTax, combinedTip);
-
-  console.log("memberCharges: ", memberCharges);
 
   return (
     <View style={commonStyles.container}>
@@ -173,6 +172,20 @@ export default function ItemizedResultScreen({ route }) {
           </Text>
         </View>
       </View>
+      <View style={[styles.row, {marginTop: 'auto', marginBottom: 30, justifyContent: 'center'}]}>
+        <CustomButton 
+          text="Share"
+          onPress={()=>onClickShare({members, memberCharges, combinedSubtotal, combinedTax, combinedTip, combinedTotal, newTipPercent, taxPercent})}
+          btnStyle={{width: '70%', alignSelf: 'center'}}
+          style={{flex:1}}
+        />
+        <CustomButton 
+          text="Exit"
+          onPress={()=>onClickExit(navigation)}
+          btnStyle={{width: '70%', alignSelf: 'center', backgroundColor: '#acacac'}}
+          style={{flex:1}}
+        />
+      </View>
     </View>
   );
 }
@@ -219,6 +232,42 @@ function divisibleByN(price, n) {
   let quotient = price / n;
   let roundedQuotient = Math.ceil(quotient);
   return roundedQuotient * n;
+}
+
+const onClickShare = (data) => {
+  const { members, memberCharges, combinedSubtotal, combinedTax, combinedTip, combinedTotal, newTipPercent:tipPercent, taxPercent } = data;
+  let text = "";
+  members.forEach(member => {
+    text += "Name: " + member.name + "\n";
+    memberCharges.filter(memCharge => memCharge.memId == member.id).forEach(memCharge => {
+      text += memCharge.itemName.substring(0, 15).padEnd(30, " ") + "$ " + memCharge.itemPortionPrice.toFixed(2) + "\n";
+    });
+    text += "\n".padStart(42, "-");
+    let subtotal = getSubtotal(memberCharges, member.id);
+    let tax = getTax(subtotal, taxPercent);
+    let tip = getTip(subtotal, tipPercent);
+    text += "Subtotal:".padEnd(30, " ") + "$ " + subtotal.toFixed(2) + "\n";
+    text += "Tax:".padEnd(30, " ") + "$ " + tax.toFixed(2) + "\n";
+    text += "Tip:".padEnd(30, " ") + "$ " + tip.toFixed(2) + "\n";
+    text += "Total:".padEnd(30, " ") + "$ " + getTotal(subtotal, tax, tip).toFixed(2) + "\n";
+    text += "\n".padStart(42, "=");
+  });
+  text += "Subtotal:".padEnd(30, " ") + "$ " + combinedSubtotal.toFixed(2) + "\n";
+  text += "Tax:".padEnd(30, " ") + "$ " + combinedTax.toFixed(2) + "\n";
+  text += "Tip:".padEnd(30, " ") + "$ " + combinedTip.toFixed(2) + "\n";
+  text += "Total:".padEnd(30, " ") + "$ " + combinedTotal.toFixed(2) + "\n";
+
+  console.log(text);
+
+  Share.share({
+    message: text
+  })
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
+}
+
+const onClickExit = (navigation) => {
+  navigation.popToTop();
 }
 
 const styles = StyleSheet.create({

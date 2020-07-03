@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Alert, Modal } from "react-native";
+import { View, Text, Modal, TextInput } from "react-native";
 
 import { commonStyles } from "../CommonStyles";
 import ListItem from "../components/ListItem";
@@ -339,30 +339,32 @@ export default class VerifyScan extends Component {
                 {onEdit ? "Edit" : "Add"}
               </Text>
               <View style={{ flexDirection: "row" }}>
-                <InputGroup
-                  inputRef={input => {
+                <TextInput
+                  ref={input => {
                     this.itemInput = input;
                   }}
                   onChangeText={text => this.onChangeModalText(text)}
                   value={modalText}
-                  style={{ flex: 1.5 }}
+                  style={[commonStyles.input, { flex: 1.5 }]}
                   editable={modalId >= 0}
                   placeholder="Item Name"
                   returnKeyType="next"
                   onSubmitEditing={() => this.priceInput.focus()}
                   blurOnSubmit={false}
+                  underlineColorAndroid="#999"
                 />
-                <InputGroup
-                  inputRef={input => {
+                <TextInput
+                  ref={input => {
                     this.priceInput = input;
                   }}
                   onChangeText={price => this.onChangeModalPrice(price)}
                   value={modalPrice}
-                  style={{ flex: 1 }}
+                  style={[commonStyles.input, { flex: 1 }]}
                   keyboardType="numeric"
                   placeholder="Price"
                   returnKeyType={"done"}
                   onSubmitEditing={() => this.onClickConfirm()}
+                  underlineColorAndroid="#999"
                 />
               </View>
               <View

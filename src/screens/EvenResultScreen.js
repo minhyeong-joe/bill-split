@@ -1,9 +1,11 @@
 import React from "react";
-import { Text, ScrollView, View, StyleSheet } from "react-native";
+import { Text, ScrollView, View, StyleSheet, Share } from "react-native";
 
 import { commonStyles } from "../CommonStyles";
 
-export default function EvenResultScreen({ route }) {
+import CustomButton from "../components/CustomButton";
+
+export default function EvenResultScreen({ navigation, route }) {
   const {
     items,
     numParty,
@@ -86,6 +88,21 @@ export default function EvenResultScreen({ route }) {
         {" "}
         $ {(total / numParty).toFixed(2)} / Person
       </Text>
+
+      <View style={[styles.row, {marginTop: 'auto', marginBottom: 30, justifyContent: 'center'}]}>
+        <CustomButton 
+          text="Share"
+          onPress={()=>onClickShare({items, subtotal, tax, tip, total, numParty})}
+          btnStyle={{width: '70%', alignSelf: 'center'}}
+          style={{flex:1}}
+        />
+        <CustomButton 
+          text="Exit"
+          onPress={()=>onClickExit(navigation)}
+          btnStyle={{width: '70%', alignSelf: 'center', backgroundColor: '#acacac'}}
+          style={{flex:1}}
+        />
+      </View>
     </View>
   );
 }
@@ -94,6 +111,34 @@ function divisibleByN(price, n) {
   let quotient = price / n;
   let roundedQuotient = Math.ceil(quotient);
   return roundedQuotient * n;
+}
+
+const onClickShare = (data) => {
+  const {items, subtotal, tax, tip, total, numParty} = data;
+  let text = "";
+  
+  text += "Items:\n"
+  items.forEach(item => {
+    text += item.item.substring(0, 15).padEnd(30, " ") + "$ " + item.price.toFixed(2) + "\n";
+  });
+  text += "\n".padStart(42, "=");
+  text += "Subtotal:".padEnd(30, " ") + "$ " + subtotal.toFixed(2) + "\n";
+  text += "Tax:".padEnd(30, " ") + "$ " + tax.toFixed(2) + "\n";
+  text += "Tip:".padEnd(30, " ") + "$ " + tip.toFixed(2) + "\n";
+  text += "Total:".padEnd(30, " ") + "$ " + total.toFixed(2) + "\n";
+  text += ("$" + (total/numParty).toFixed(2) + " / Person").padStart(26, " ") + "\n";
+
+  console.log(text);
+
+  Share.share({
+    message: text
+  })
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
+}
+
+const onClickExit = (navigation) => {
+  navigation.popToTop();
 }
 
 const styles = StyleSheet.create({
