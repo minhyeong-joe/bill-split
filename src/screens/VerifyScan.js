@@ -88,9 +88,9 @@ export default class VerifyScan extends Component {
     const priceRegex = /[0-9]+\s{0,1}[\.\,\s]\s{0,1}[0-9]{2}/;
     const itemPriceRegex = /.+\s+[0-9]+\s{0,1}[\.\,\s]\s{0,1}[0-9]{2}/;
     // OCR API sometimes reads subtotal as "subtota I" depends on pic quality/font. Using regex to capture as many cases.
-    const subtotalRegex = /(sub\s{0,1}tota|sub-tota)\s{0,2}[il1]\s+[0-9]+\s{0,1}[\.\,\s]\s{0,1}[0-9]{2}/i;
-    const taxRegex = /tax\s+[0-9]+\s{0,1}[\.\,\s]\s{0,1}[0-9]{2}/i;
-    const totalRegex = /(tota)\s{0,1}[il1]\s+[0-9]+\s{0,1}[\.\,\s]\s{0,1}[0-9]{2}/i;
+    const subtotalRegex = /(sub\s{0,1}tota|sub-tota)\s{0,2}[il1]\s+\${0,1}\s+[0-9]+\s{0,1}[\.\,\s]\s{0,1}[0-9]{2}/i;
+    const taxRegex = /tax\s+\${0,1}\s+[0-9]+\s{0,1}[\.\,\s]\s{0,1}[0-9]{2}/i;
+    const totalRegex = /(tota)\s{0,1}[il1]\s+\${0,1}\s+[0-9]+\s{0,1}[\.\,\s]\s{0,1}[0-9]{2}/i;
     // for each line,
     // if it is item, price pair, add it into item object - items: [{id, item, price} ...]
     // if it is is subtotal, tax, or total - set corresponding variable
